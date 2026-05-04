@@ -1,3 +1,5 @@
+package model;
+
 public class Novel extends Buku {
     private String genre;
     private int volume;
@@ -13,12 +15,5 @@ public class Novel extends Buku {
     }
     public int getVolume(){ 
         return volume; 
-    }
-
-    @Override
-    public void tampilkanInfo() {
-        super.tampilkanInfo();
-        System.out.println("Genre : " + genre);
-        System.out.println("Volume : " + volume);
     }
 }

@@ -1,3 +1,5 @@
+package model;
+
 public class Komik extends Buku {
     private String genre;
     private int volume;
@@ -25,12 +27,4 @@ public class Komik extends Buku {
         return volume;
     }
 
-    @Override
-    public void tampilkanInfo() {
-        super.tampilkanInfo();
-        System.out.println("Genre : " + genre);
-        System.out.println("Volume : " + volume);
-        System.out.println("Negara Asal : " + negaraAsal);
-        System.out.println("Ilustrator : " + ilustrator);
-    }
 }
