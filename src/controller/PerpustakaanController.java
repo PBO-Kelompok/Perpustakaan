@@ -1,4 +1,5 @@
 package controller;
+
 import model.Buku;
 import model.Sorting;
 import model.Searching;
@@ -17,51 +18,94 @@ public class PerpustakaanController {
         this.view.btnTampil.addActionListener(e -> tampilkanBuku(daftarBuku));
         this.view.btnSort.addActionListener(e -> sortingBuku());
         this.view.btnSearch.addActionListener(e -> searchBuku());
-
+        this.view.btnEdit.addActionListener(e -> editBuku());
     }
 
-    private void tampilkanBuku(ArrayList<Buku> data) {
-        view.area.setText("");  
+    private void tampilkanBuku(ArrayList<Buku> data) { 
+        view.tableModel.setRowCount(0);
+
         for (Buku b : data) {
-            view.area.append(
-                b.getNoSeri() + " - " +
-                b.getJudul() + " - " +
-                b.getPenulis() + " (" +
-                b.getTahunTerbit() + ")"+
-                b.getStatus()+ "\n"
-            );
+            view.tableModel.addRow(new Object[]{
+                b.getNoSeri(),
+                b.getJudul(),
+                b.getPenulis(),
+                b.getTahunTerbit(),
+                b.getStatus()
+            });
         }
     }
+
     private void sortingBuku(){
         ArrayList<Buku> temp = new ArrayList<>(daftarBuku);
         Sorting.sort(temp);
-            tampilkanBuku(temp);
-        }
+        tampilkanBuku(temp);
+    }
 
+    private void editBuku() {
+    int row = view.table.getSelectedRow();
+
+    if (row == -1) {
+        JOptionPane.showMessageDialog(null, "Pilih buku dulu!");
+        return;
+    }
+
+    int noSeri = (int) view.tableModel.getValueAt(row, 0);
+
+    for (Buku b : daftarBuku) {
+        if (b.getNoSeri() == noSeri) {
+            try {
+                String judulBaru = JOptionPane.showInputDialog("Judul baru:", b.getJudul());
+                String penulisBaru = JOptionPane.showInputDialog("Penulis baru:", b.getPenulis());
+                int tahunBaru = Integer.parseInt(
+                        JOptionPane.showInputDialog("Tahun baru:", b.getTahunTerbit())
+                );
+
+                // update data
+                b.setJudul(judulBaru);
+                b.setPenulis(penulisBaru);
+                b.setTahunTerbit(tahunBaru);
+
+                break;
+
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Input tidak valid!");
+            }
+        }
+    }
+
+    tampilkanBuku(daftarBuku);
+}
+
+    
     private void searchBuku(){
         ArrayList<Buku> temp = new ArrayList<>(daftarBuku);
         Sorting.sort(temp);
+
         String input = JOptionPane.showInputDialog("Masukkan No Seri:");
+
         try {
             int key = Integer.parseInt(input); 
-            int hasilSearch = Searching.search(temp,key);
-                if (hasilSearch != -1) {
-                    Buku b = temp.get(hasilSearch);
-                        view.area.append(
-                        b.getNoSeri() + " - " +
-                        b.getJudul() + " - " +
-                        b.getPenulis() + " (" +
-                        b.getTahunTerbit() + ")"+
-                        b.getStatus()+ "\n"
-                    );
-                } 
-                else {
-                    view.area.append("Buku tidak ditemukan");
-                }
+            int hasilSearch = Searching.search(temp, key);
+
+            view.tableModel.setRowCount(0);
+
+            if (hasilSearch != -1) {
+                Buku b = temp.get(hasilSearch);
+
+                view.tableModel.addRow(new Object[]{
+                    b.getNoSeri(),
+                    b.getJudul(),
+                    b.getPenulis(),
+                    b.getTahunTerbit(),
+                    b.getStatus()
+                });
+
+            } else {
+                JOptionPane.showMessageDialog(null, "Buku tidak ditemukan");
+            }
+
         } catch (NumberFormatException e) {
-            view.area.setText("Input harus berupa angka!");
+            JOptionPane.showMessageDialog(null, "Input harus berupa angka!");
         }
-        
     }
-    
 }

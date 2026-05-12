@@ -37,4 +37,16 @@ public class Buku {
         status.kembalikan();
     }
 
+    public void setJudul(String judul) {
+    this.judul = judul;
+}
+
+public void setPenulis(String penulis) {
+    this.penulis = penulis;
+}
+
+public void setTahunTerbit(int tahunTerbit) {
+    this.tahunTerbit = tahunTerbit;
+}
+
 }
