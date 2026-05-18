@@ -43,6 +43,9 @@ public class Buku {
     public void setJudul(String judul) {
     this.judul = judul;
     }
+        public void setNoSeri(int noSeri) {
+    this.noSeri = noSeri;
+    }
 
     public void setPenulis(String penulis) {
         this.penulis = penulis;

@@ -1,6 +1,8 @@
 package controller;
 
 import model.Buku;
+import model.Komik;
+import model.Novel;
 import model.Sorting;
 import model.Searching;
 import view.PerpustakaanView;
@@ -22,6 +24,7 @@ public class PerpustakaanController {
         this.view.btnPinjam.addActionListener(e -> pinjamBuku());
         this.view.btnKembali.addActionListener(e -> kembalikanBuku());
         this.view.btnDPD.addActionListener(e -> daftarBukuDipinjam());
+        this.view.btnTambah.addActionListener(e -> tambahBuku());
     }
 
     private void tampilkanBuku(ArrayList<Buku> data) { 
@@ -205,6 +208,133 @@ public class PerpustakaanController {
                     b.getStatus()
                 });
             }
+        }
+    }
+    private void tambahBuku() {
+        try {
+            String[] pilihan = {"Buku", "Novel", "Komik"};
+
+            String jenis = (String) JOptionPane.showInputDialog(
+                null,
+                "Pilih jenis buku:",
+                "Tambah Buku",
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                pilihan,
+                pilihan[0]
+            );
+
+            if (jenis == null) {
+                return;
+            }
+
+            String judul = JOptionPane.showInputDialog("Masukkan Judul:");
+            String penulis = JOptionPane.showInputDialog("Masukkan Penulis:");
+
+            int noSeri = Integer.parseInt(
+                JOptionPane.showInputDialog("Masukkan Nomor Seri:")
+            );
+
+            int tahunTerbit = Integer.parseInt(
+                JOptionPane.showInputDialog("Masukkan Tahun Terbit:")
+            );
+
+            // cek no seri duplikat
+            for (Buku b : daftarBuku) {
+                if (b.getNoSeri() == noSeri) {
+                    JOptionPane.showMessageDialog(
+                        null,
+                        "Nomor seri sudah digunakan!"
+                    );
+                    return;
+                }
+            }
+
+            switch (jenis) {
+
+                case "Buku":
+
+                    Buku bukuBaru = new Buku(
+                        judul,
+                        penulis,
+                        noSeri,
+                        tahunTerbit
+                    );
+
+                    daftarBuku.add(bukuBaru);
+
+                    break;
+
+                case "Novel":
+
+                    String genre = JOptionPane.showInputDialog(
+                        "Masukkan Genre:"
+                    );
+
+                    int volume = Integer.parseInt(
+                        JOptionPane.showInputDialog("Masukkan Volume:")
+                    );
+
+                    Novel novelBaru = new Novel(
+                        judul,
+                        penulis,
+                        noSeri,
+                        tahunTerbit,
+                        genre,
+                        volume
+                    );
+
+                    daftarBuku.add(novelBaru);
+
+                    break;
+
+                case "Komik":
+
+                    String genreK = JOptionPane.showInputDialog(
+                        "Masukkan Genre:"
+                    );
+
+                    int volumeK = Integer.parseInt(
+                        JOptionPane.showInputDialog("Masukkan Volume:")
+                    );
+
+                    String negaraAsal = JOptionPane.showInputDialog(
+                        "Masukkan Negara Asal:"
+                    );
+
+                    String ilustrator = JOptionPane.showInputDialog(
+                        "Masukkan Ilustrator:"
+                    );
+
+                    Komik komikBaru = new Komik(
+                        judul,
+                        penulis,
+                        noSeri,
+                        tahunTerbit,
+                        genreK,
+                        volumeK,
+                        negaraAsal,
+                        ilustrator
+                    );
+
+                    daftarBuku.add(komikBaru);
+
+                    break;
+            }
+
+            JOptionPane.showMessageDialog(
+                null,
+                "Buku berhasil ditambahkan!"
+            );
+
+            tampilkanBuku(daftarBuku);
+
+        } catch (NumberFormatException e) {
+
+            JOptionPane.showMessageDialog(
+                null,
+                "Input angka tidak valid!"
+            );
         }
     }
 }
