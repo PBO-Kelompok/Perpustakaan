@@ -19,6 +19,7 @@ public class PerpustakaanController {
         this.view.btnSort.addActionListener(e -> sortingBuku());
         this.view.btnSearch.addActionListener(e -> searchBuku());
         this.view.btnEdit.addActionListener(e -> editBuku());
+        this.view.btnPinjam.addActionListener(e -> pinjamBuku());
     }
 
     private void tampilkanBuku(ArrayList<Buku> data) { 
@@ -48,33 +49,31 @@ public class PerpustakaanController {
         JOptionPane.showMessageDialog(null, "Pilih buku dulu!");
         return;
     }
-
     int noSeri = (int) view.tableModel.getValueAt(row, 0);
+        for (Buku b : daftarBuku) {
+            if (b.getNoSeri() == noSeri) {
+                try {
+                    String judulBaru = JOptionPane.showInputDialog("Judul baru:", b.getJudul());
+                    String penulisBaru = JOptionPane.showInputDialog("Penulis baru:", b.getPenulis());
+                    int tahunBaru = Integer.parseInt(
+                            JOptionPane.showInputDialog("Tahun baru:", b.getTahunTerbit())
+                    );
 
-    for (Buku b : daftarBuku) {
-        if (b.getNoSeri() == noSeri) {
-            try {
-                String judulBaru = JOptionPane.showInputDialog("Judul baru:", b.getJudul());
-                String penulisBaru = JOptionPane.showInputDialog("Penulis baru:", b.getPenulis());
-                int tahunBaru = Integer.parseInt(
-                        JOptionPane.showInputDialog("Tahun baru:", b.getTahunTerbit())
-                );
+                    // update data
+                    b.setJudul(judulBaru);
+                    b.setPenulis(penulisBaru);
+                    b.setTahunTerbit(tahunBaru);
 
-                // update data
-                b.setJudul(judulBaru);
-                b.setPenulis(penulisBaru);
-                b.setTahunTerbit(tahunBaru);
+                    break;
 
-                break;
-
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "Input tidak valid!");
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, "Input tidak valid!");
+                }
             }
         }
-    }
 
-    tampilkanBuku(daftarBuku);
-}
+        tampilkanBuku(daftarBuku);
+    }
 
     
     private void searchBuku(){
@@ -108,4 +107,49 @@ public class PerpustakaanController {
             JOptionPane.showMessageDialog(null, "Input harus berupa angka!");
         }
     }
+
+    private void pinjamBuku() {
+    int row = view.table.getSelectedRow();
+        if (row == -1) {
+            JOptionPane.showMessageDialog(null, "Pilih buku dulu!");
+            return;
+        }
+    int noSeri = (int) view.tableModel.getValueAt(row, 0);
+        for (Buku b : daftarBuku) {
+            if (b.getNoSeri() == noSeri) {
+
+                // Validasi apakah buku sudah dipinjam
+                if (b.getStatus().equals("Dipinjam")) {
+                    JOptionPane.showMessageDialog(
+                        null,
+                        "Buku sedang dipinjam!"
+                    );
+                    return;
+                }
+
+                // Input catatan
+                String catatan = JOptionPane.showInputDialog(
+                    null,
+                    "Masukkan catatan peminjaman:"
+                );
+
+                // Jika user cancel
+                if (catatan == null) {
+                    return;
+                }
+
+                b.pinjamBuku(catatan);
+
+                JOptionPane.showMessageDialog(
+                    null,
+                    "Buku berhasil dipinjam"
+                );
+
+                break;
+            }
+        }
+
+        tampilkanBuku(daftarBuku);
+    }
+
 }

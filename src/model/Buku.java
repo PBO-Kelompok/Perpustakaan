@@ -30,8 +30,11 @@ public class Buku {
         public String getStatus() {
         return status.getStatusText();
     }
-    public void pinjamBuku() {
-        status.pinjam();
+    public String getCatatan(){
+        return status.catatan();
+    }
+    public void pinjamBuku(String catatan) {
+        status.pinjam(catatan);
     }
     public void kembalikanBuku() {
         status.kembalikan();
@@ -39,14 +42,14 @@ public class Buku {
 
     public void setJudul(String judul) {
     this.judul = judul;
-}
+    }
 
-public void setPenulis(String penulis) {
-    this.penulis = penulis;
-}
+    public void setPenulis(String penulis) {
+        this.penulis = penulis;
+    }
 
-public void setTahunTerbit(int tahunTerbit) {
-    this.tahunTerbit = tahunTerbit;
-}
+    public void setTahunTerbit(int tahunTerbit) {
+        this.tahunTerbit = tahunTerbit;
+    }
 
 }

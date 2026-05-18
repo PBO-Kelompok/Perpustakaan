@@ -13,7 +13,6 @@ public class Main {
         semuaBuku.add(new Buku("Laskar Pelangi", "Andrea Hirata",012, 2005));
         semuaBuku.add(new Buku("Bumi", "Tere Liye", 013, 2014));
         semuaBuku.add(new Buku("Buuik","iki",015, 2012));
-
         semuaBuku.add(new Komik("Latna Saga", "Soon-Q", 987, 2012, "Isekai", 20, "Korea", "Khit Studio"));
         semuaBuku.add(new Komik("One Piece", "Eichiro Oda", 123, 2006, "Pirate", 2000, "Jepang", "Who know"));
         semuaBuku.add(new Komik("Isekai Smartphone", "Enda", 1, 2012, "Peak Isekai", 10, "Jepang", "Deen"));
@@ -26,4 +25,4 @@ public class Main {
 
         view.setVisible(true);
     }
-}
+}  
