@@ -5,22 +5,13 @@ class Status {
     private String catatan = "" ;
 
     void pinjam(String catatan) {
-        if (!dipinjam) {
-            dipinjam = true;
-            this.catatan = catatan;
-        } else {
-            System.out.println("Buku sudah dipinjam!");
-        }
+        dipinjam = true;
+        this.catatan = catatan;
     }
 
     void kembalikan() {
-        if (dipinjam) {
-            dipinjam = false;
-            catatan = "";
-            
-        } else {
-            System.out.println("Buku belum dipinjam!");
-        }
+        dipinjam = false;
+        catatan = ""; 
     }
 
     boolean isDipinjam() {

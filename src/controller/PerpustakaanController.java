@@ -20,6 +20,7 @@ public class PerpustakaanController {
         this.view.btnSearch.addActionListener(e -> searchBuku());
         this.view.btnEdit.addActionListener(e -> editBuku());
         this.view.btnPinjam.addActionListener(e -> pinjamBuku());
+        this.view.btnKembali.addActionListener(e -> kembalikanBuku());
     }
 
     private void tampilkanBuku(ArrayList<Buku> data) { 
@@ -152,4 +153,38 @@ public class PerpustakaanController {
         tampilkanBuku(daftarBuku);
     }
 
+    private void kembalikanBuku() {
+        int row = view.table.getSelectedRow();
+        if (row == -1) {
+            JOptionPane.showMessageDialog(null, "Pilih buku dulu!");
+            return;
+        }
+
+        int noSeri = (int) view.tableModel.getValueAt(row, 0);
+
+        for (Buku b : daftarBuku) {
+            if (b.getNoSeri() == noSeri) {
+
+                // Validasi jika buku belum dipinjam
+                if (b.getStatus().equals("Tersedia")) {
+                    JOptionPane.showMessageDialog(
+                        null,
+                        "Buku belum dipinjam!"
+                    );
+                    return;
+                }
+
+                b.kembalikanBuku();
+
+                JOptionPane.showMessageDialog(
+                    null,
+                    "Buku berhasil dikembalikan"
+                );
+
+                break;
+            }
+        }
+
+        tampilkanBuku(daftarBuku);
+    }
 }
