@@ -21,6 +21,7 @@ public class PerpustakaanController {
         this.view.btnEdit.addActionListener(e -> editBuku());
         this.view.btnPinjam.addActionListener(e -> pinjamBuku());
         this.view.btnKembali.addActionListener(e -> kembalikanBuku());
+        this.view.btnDPD.addActionListener(e -> daftarBukuDipinjam());
     }
 
     private void tampilkanBuku(ArrayList<Buku> data) { 
@@ -186,5 +187,24 @@ public class PerpustakaanController {
         }
 
         tampilkanBuku(daftarBuku);
+    }
+
+    private void daftarBukuDipinjam() { 
+        view.tableModel.setRowCount(0);
+
+        for (Buku b : daftarBuku) {
+
+            // Hanya tampilkan buku yang dipinjam
+            if (b.getStatus().equals("Dipinjam")) {
+
+                view.tableModel.addRow(new Object[]{
+                    b.getNoSeri(),
+                    b.getJudul(),
+                    b.getPenulis(),
+                    b.getTahunTerbit(),
+                    b.getStatus()
+                });
+            }
+        }
     }
 }
