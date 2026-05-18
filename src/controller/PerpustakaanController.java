@@ -28,19 +28,49 @@ public class PerpustakaanController {
         this.view.btnDelete.addActionListener(e -> deleteBuku());
     }
 
-    private void tampilkanBuku(ArrayList<Buku> data) { 
-        view.tableModel.setRowCount(0);
+    private void tampilkanBuku(ArrayList<Buku> data) {
 
-        for (Buku b : data) {
-            view.tableModel.addRow(new Object[]{
-                b.getNoSeri(),
-                b.getJudul(),
-                b.getPenulis(),
-                b.getTahunTerbit(),
-                b.getStatus()
-            });
+    view.tableModel.setRowCount(0);
+
+    for (Buku b : data) {
+
+        String genre = "-";
+        String volume = "-";
+        String negaraAsal = "-";
+        String ilustrator = "-";
+
+        // jika Novel
+        if (b instanceof Novel) {
+            Novel n = (Novel) b;
+
+            genre = n.getGenre();
+            volume = String.valueOf(n.getVolume());
         }
+
+        // jika Komik
+        if (b instanceof Komik) {
+            Komik k = (Komik) b;
+
+            genre = k.getGenre();
+            volume = String.valueOf(k.getVolume());
+            negaraAsal = k.getNegaraAsal();
+            ilustrator = k.getIlustrator();
+        }
+
+        view.tableModel.addRow(new Object[]{
+            b.getNoSeri(),
+            b.getJudul(),
+            b.getPenulis(),
+            b.getTahunTerbit(),
+            b.getStatus(),
+            b.getCatatan(),
+            genre,
+            volume,
+            negaraAsal,
+            ilustrator
+        });
     }
+}
 
     private void sortingBuku(){
         ArrayList<Buku> temp = new ArrayList<>(daftarBuku);
@@ -49,37 +79,123 @@ public class PerpustakaanController {
     }
 
     private void editBuku() {
+
     int row = view.table.getSelectedRow();
 
     if (row == -1) {
-        JOptionPane.showMessageDialog(null, "Pilih buku dulu!");
+
+        JOptionPane.showMessageDialog(
+            null,
+            "Pilih buku dulu!"
+        );
+
         return;
     }
+
     int noSeri = (int) view.tableModel.getValueAt(row, 0);
-        for (Buku b : daftarBuku) {
-            if (b.getNoSeri() == noSeri) {
-                try {
-                    String judulBaru = JOptionPane.showInputDialog("Judul baru:", b.getJudul());
-                    String penulisBaru = JOptionPane.showInputDialog("Penulis baru:", b.getPenulis());
-                    int tahunBaru = Integer.parseInt(
-                            JOptionPane.showInputDialog("Tahun baru:", b.getTahunTerbit())
+
+    for (Buku b : daftarBuku) {
+
+        if (b.getNoSeri() == noSeri) {
+
+            try {
+
+                // input dasar
+                String judulBaru = JOptionPane.showInputDialog(
+                    "Judul baru:",
+                    b.getJudul()
+                );
+
+                String penulisBaru = JOptionPane.showInputDialog(
+                    "Penulis baru:",
+                    b.getPenulis()
+                );
+
+                int tahunBaru = Integer.parseInt(
+                    JOptionPane.showInputDialog(
+                        "Tahun baru:",
+                        b.getTahunTerbit()
+                    )
+                );
+
+                // update data dasar
+                b.setJudul(judulBaru);
+                b.setPenulis(penulisBaru);
+                b.setTahunTerbit(tahunBaru);
+
+                // jika Novel
+                if (b instanceof Novel) {
+
+                    Novel n = (Novel) b;
+
+                    String genreBaru = JOptionPane.showInputDialog(
+                        "Genre baru:",
+                        n.getGenre()
                     );
 
-                    // update data
-                    b.setJudul(judulBaru);
-                    b.setPenulis(penulisBaru);
-                    b.setTahunTerbit(tahunBaru);
+                    int volumeBaru = Integer.parseInt(
+                        JOptionPane.showInputDialog(
+                            "Volume baru:",
+                            n.getVolume()
+                        )
+                    );
 
-                    break;
-
-                } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, "Input tidak valid!");
+                    n.setGenre(genreBaru);
+                    n.setVolume(volumeBaru);
                 }
+
+                // jika Komik
+                if (b instanceof Komik) {
+
+                    Komik k = (Komik) b;
+
+                    String genreBaru = JOptionPane.showInputDialog(
+                        "Genre baru:",
+                        k.getGenre()
+                    );
+
+                    int volumeBaru = Integer.parseInt(
+                        JOptionPane.showInputDialog(
+                            "Volume baru:",
+                            k.getVolume()
+                        )
+                    );
+
+                    String negaraBaru = JOptionPane.showInputDialog(
+                        "Negara asal baru:",
+                        k.getNegaraAsal()
+                    );
+
+                    String ilustratorBaru = JOptionPane.showInputDialog(
+                        "Ilustrator baru:",
+                        k.getIlustrator()
+                    );
+
+                    k.setGenre(genreBaru);
+                    k.setVolume(volumeBaru);
+                    k.setNegaraAsal(negaraBaru);
+                    k.setIlustrator(ilustratorBaru);
+                }
+
+                JOptionPane.showMessageDialog(
+                    null,
+                    "Data buku berhasil diupdate!"
+                );
+
+                break;
+
+            } catch (Exception e) {
+
+                JOptionPane.showMessageDialog(
+                    null,
+                    "Input tidak valid!"
+                );
             }
         }
-
-        tampilkanBuku(daftarBuku);
     }
+
+    tampilkanBuku(daftarBuku);
+}
 
     
     private void searchBuku(){
@@ -193,24 +309,55 @@ public class PerpustakaanController {
         tampilkanBuku(daftarBuku);
     }
 
-    private void daftarBukuDipinjam() { 
-        view.tableModel.setRowCount(0);
+    private void daftarBukuDipinjam() {
 
-        for (Buku b : daftarBuku) {
+    view.tableModel.setRowCount(0);
 
-            // Hanya tampilkan buku yang dipinjam
-            if (b.getStatus().equals("Dipinjam")) {
+    for (Buku b : daftarBuku) {
 
-                view.tableModel.addRow(new Object[]{
-                    b.getNoSeri(),
-                    b.getJudul(),
-                    b.getPenulis(),
-                    b.getTahunTerbit(),
-                    b.getStatus()
-                });
+        // hanya tampilkan buku yang dipinjam
+        if (b.getStatus().equals("Dipinjam")) {
+
+            String genre = "-";
+            String volume = "-";
+            String negaraAsal = "-";
+            String ilustrator = "-";
+
+            // jika Novel
+            if (b instanceof Novel) {
+
+                Novel n = (Novel) b;
+
+                genre = n.getGenre();
+                volume = String.valueOf(n.getVolume());
             }
+
+            // jika Komik
+            if (b instanceof Komik) {
+
+                Komik k = (Komik) b;
+
+                genre = k.getGenre();
+                volume = String.valueOf(k.getVolume());
+                negaraAsal = k.getNegaraAsal();
+                ilustrator = k.getIlustrator();
+            }
+
+            view.tableModel.addRow(new Object[]{
+                b.getNoSeri(),
+                b.getJudul(),
+                b.getPenulis(),
+                b.getTahunTerbit(),
+                b.getStatus(),
+                b.getCatatan(),
+                genre,
+                volume,
+                negaraAsal,
+                ilustrator
+            });
         }
     }
+}
 
     private void tambahBuku() {
         try {
@@ -373,7 +520,7 @@ public class PerpustakaanController {
 
                 if (konfirmasi == JOptionPane.YES_OPTION) {
 
-                    daftarBuku.remove(b);
+                    daftarBuku.removeIf(x -> x.getNoSeri() == noSeri);
 
                     JOptionPane.showMessageDialog(
                         null,

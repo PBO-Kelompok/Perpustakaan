@@ -16,4 +16,10 @@ public class Novel extends Buku {
     public int getVolume(){ 
         return volume; 
     }
+    public void setGenre(String genre) {
+    this.genre = genre;
+}
+    public void setVolume(int volume) {
+        this.volume = volume;
+    }
 }

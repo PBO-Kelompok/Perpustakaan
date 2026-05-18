@@ -24,8 +24,18 @@ public JButton btnDPD = new JButton("Daftar Buku Dipinjam");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        String[] kolom = {"No Seri", "Judul", "Penulis", "Tahun", "Status"};
-
+            String[] kolom = {
+                "No Seri",
+                "Judul",
+                "Penulis",
+                "Tahun",
+                "Status",
+                "Catatan",
+                "Genre",
+                "Volume",
+                "Negara Asal",
+                "Ilustrator"
+            };
 tableModel = new DefaultTableModel(kolom, 0);
 table = new JTable(tableModel);
 

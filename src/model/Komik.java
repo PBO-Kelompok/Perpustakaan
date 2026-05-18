@@ -26,5 +26,16 @@ public class Komik extends Buku {
     public int getVolume(){
         return volume;
     }
-
+    public void setGenre(String genre) {
+    this.genre = genre;
+    }
+    public void setVolume(int volume) {
+        this.volume = volume;
+    }
+    public void setNegaraAsal(String negaraAsal) {
+        this.negaraAsal = negaraAsal;
+    }
+    public void setIlustrator(String ilustrator) {
+        this.ilustrator = ilustrator;
+    }
 }
