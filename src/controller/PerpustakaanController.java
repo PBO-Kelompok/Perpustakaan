@@ -25,6 +25,7 @@ public class PerpustakaanController {
         this.view.btnKembali.addActionListener(e -> kembalikanBuku());
         this.view.btnDPD.addActionListener(e -> daftarBukuDipinjam());
         this.view.btnTambah.addActionListener(e -> tambahBuku());
+        this.view.btnDelete.addActionListener(e -> deleteBuku());
     }
 
     private void tampilkanBuku(ArrayList<Buku> data) { 
@@ -210,6 +211,7 @@ public class PerpustakaanController {
             }
         }
     }
+
     private void tambahBuku() {
         try {
             String[] pilihan = {"Buku", "Novel", "Komik"};
@@ -337,4 +339,53 @@ public class PerpustakaanController {
             );
         }
     }
+
+    private void deleteBuku() {
+        int row = view.table.getSelectedRow();
+        // Validasi pilih data
+        if (row == -1) {
+            JOptionPane.showMessageDialog(
+                null,
+                "Pilih data dulu!"
+            );
+            return;
+        }
+        int noSeri = (int) view.tableModel.getValueAt(row, 0);
+        for (Buku b : daftarBuku) {
+
+            if (b.getNoSeri() == noSeri) {
+
+                // Detail buku
+                String detail =
+                    "No Seri : " + b.getNoSeri() +
+                    "\nJudul : " + b.getJudul() +
+                    "\nPenulis : " + b.getPenulis() +
+                    "\nTahun : " + b.getTahunTerbit() +
+                    "\nStatus : " + b.getStatus();
+
+                // Konfirmasi hapus
+                int konfirmasi = JOptionPane.showConfirmDialog(
+                    null,
+                    detail + "\n\nYakin ingin menghapus buku ini?",
+                    "Konfirmasi Hapus",
+                    JOptionPane.YES_NO_OPTION
+                );
+
+                if (konfirmasi == JOptionPane.YES_OPTION) {
+
+                    daftarBuku.remove(b);
+
+                    JOptionPane.showMessageDialog(
+                        null,
+                        "Buku berhasil dihapus!"
+                    );
+
+                    tampilkanBuku(daftarBuku);
+                }
+
+                return;
+            }
+        }
+    }
+
 }
