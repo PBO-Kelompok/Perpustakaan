@@ -43,7 +43,6 @@ JScrollPane scroll = new JScrollPane(table);
 
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(10,1,5,5));
-
         panel.add(btnTampil);
         panel.add(btnSort);
         panel.add(btnSearch);
@@ -57,5 +56,23 @@ JScrollPane scroll = new JScrollPane(table);
 
         add(panel, BorderLayout.WEST);
         add(scroll, BorderLayout.CENTER);
+
+        JLabel footer = new JLabel(
+            "<html><center>" +
+            "Kelompok 2<br>" +
+            "Hendri Dwi Mukti W - 25051204417<br>" +
+            "Dwi Ajeng Fadhillah D - 25051204420<br>" +
+            "Geacealsia Shello A - 25051204421<br>" +
+            "Dhea Sarrah Azzahra - 25051204432<br>" +
+            "Muhamad Zubair A.M - 25051204434<br>" +
+            "Najwan Fairuz Zaki - 25051204437<br>" +
+            "Maksima Insan Arafani - 25051204438" +
+            "</center></html>",
+            SwingConstants.CENTER
+        );
+
+        footer.setFont(new Font("Arial", Font.PLAIN, 12));
+
+        add(footer, BorderLayout.SOUTH);
     }
 }
